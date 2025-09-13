@@ -30,8 +30,8 @@ public class ProductoEntityRepository implements ProductoRepository {
 
     @Override
     public ProductoDto getById(long id) {
-        ProductoEntity movieEntity = this.crudProductoEntity.findById(id).orElse(null);
-        return this.productoMapper.toDto(movieEntity);
+        ProductoEntity productoEntity = this.crudProductoEntity.findById(id).orElse(null);
+        return this.productoMapper.toDto(productoEntity);
     }
 
     @Override

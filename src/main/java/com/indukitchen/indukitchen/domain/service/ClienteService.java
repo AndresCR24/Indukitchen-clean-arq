@@ -1,45 +1,44 @@
-/*
 package com.indukitchen.indukitchen.domain.service;
 
-import org.indukitchen.backend.facturacion.model.ClienteEntity;
-import org.indukitchen.backend.facturacion.repository.ClienteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.indukitchen.indukitchen.domain.dto.ClienteDto;
+import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
+import com.indukitchen.indukitchen.domain.repository.ClienteRepository;
+import dev.langchain4j.agent.tool.Tool;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ClienteService {
+
     private final ClienteRepository clienteRepository;
 
-    @Autowired
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
-    public List<ClienteEntity> getAll()
-    {
-        return this.clienteRepository.findAll();
+
+    @Tool("Busca todos los usuarios que existan dentro de la plataforma")
+    public List<ClienteDto> getAllClientes() {
+        return this.clienteRepository.getAll();
     }
 
-    public ClienteEntity save(ClienteEntity usuario)
-    {
-        return this.clienteRepository.save(usuario);
+    public ClienteDto getById(String cedula) {
+        return this.clienteRepository.getById(cedula);
     }
 
-    public ClienteEntity get(String cedula)
-    {
-        return this.clienteRepository.findById(cedula).orElse(null);
+    public ClienteDto add(ClienteDto clienteDto) {
+        return this.clienteRepository.save(clienteDto);
     }
 
-    public boolean exists(String cedula)
-    {
-        return this.clienteRepository.existsById(cedula);
+    public ClienteDto update(String cedula, UpdateClienteDto updateClienteDto) {
+        return this.clienteRepository.update(cedula, updateClienteDto);
     }
 
-    public void deleteUsuario(String cedula){
-        this.clienteRepository.deleteById(cedula);
+    public void delete(String cedula) {
+        this.clienteRepository.delete(cedula);
     }
+
 }
 
-*/

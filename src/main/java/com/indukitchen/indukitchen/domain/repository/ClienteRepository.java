@@ -1,4 +1,14 @@
 package com.indukitchen.indukitchen.domain.repository;
 
+import com.indukitchen.indukitchen.domain.dto.ClienteDto;
+import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
 public interface ClienteRepository {
+    List<ClienteDto> getAll();
+    ClienteDto getById(String cedula);
+    ClienteDto save(ClienteDto clienteDto);
+    ClienteDto update(String cedula, UpdateClienteDto updateClienteDto);
+    void delete(String cedula);
 }

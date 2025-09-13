@@ -2,7 +2,6 @@ package com.indukitchen.indukitchen.domain.service;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
-import dev.langchain4j.service.V;
 import dev.langchain4j.service.spring.AiService;
 
 @AiService
@@ -19,5 +18,13 @@ public interface IndukitchenAiService {
                         Debes recomendar máximo 3 productos.
                         No incluyas productos que estén por fuera de la plataforma Indukitchen.
             """)
-    String generateMoviesSiggestion(@UserMessage String userMessage);
+    String generateProductSuggestion(@UserMessage String userMessage);
+
+
+    @SystemMessage("""
+            Eres un experto en productos industriales de cocina que recomienda personalizadamente al admin que.
+                        clientes de la empresa son los mejores.
+                        No incluyas clientes que estén por fuera de la plataforma Indukitchen.
+            """)
+    String generateClienteSuggestion(@UserMessage String userMessage);
 }

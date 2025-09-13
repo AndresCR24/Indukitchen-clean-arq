@@ -3,9 +3,8 @@ package com.indukitchen.indukitchen.domain.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.util.List;
 
-public record ClienteDto(
+public record UpdateClienteDto(
 
         @NotBlank(message = "La cédula es obligatoria")
         String cedula,
@@ -25,15 +24,5 @@ public record ClienteDto(
         @NotBlank(message = "El teléfono es obligatorio")
         @Size(max = 17, message = "El teléfono no puede exceder 18 caracteres")
         String telefono
-
-        // campos administrados por JPA; normalmente se devuelven pero no se reciben en creación
-//        LocalDateTime createdAt,
-//        LocalDateTime updatedAt,
-
-        /**
-         * Lista de IDs de carritos asociados al cliente.
-         * Cambiar a List<CarritoDto> si tienes el DTO correspondiente.
-         */
-//        List<String> carritos
 ) {
 }

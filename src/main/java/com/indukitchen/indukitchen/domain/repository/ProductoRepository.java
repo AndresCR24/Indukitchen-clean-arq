@@ -6,7 +6,6 @@ import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
 import java.util.List;
 
 public interface ProductoRepository {
-
     List<ProductoDto> getAll();
     ProductoDto getById(long id);
     ProductoDto save(ProductoDto movieDto);

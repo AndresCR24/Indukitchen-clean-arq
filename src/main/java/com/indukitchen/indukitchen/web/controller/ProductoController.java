@@ -1,9 +1,9 @@
 package com.indukitchen.indukitchen.web.controller;
 
-
+import com.indukitchen.indukitchen.domain.dto.ClienteDto;
 import com.indukitchen.indukitchen.domain.dto.ProductoDto;
 import com.indukitchen.indukitchen.domain.dto.SuggestProductDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
+import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
 import com.indukitchen.indukitchen.domain.service.IndukitchenAiService;
 import com.indukitchen.indukitchen.domain.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,14 +65,14 @@ public class ProductoController {
     }
 
     @PostMapping("/suggest")
-    public ResponseEntity<String> generateMoviesSuggestion(@RequestBody SuggestProductDto suggestProductDto) {
-        return ResponseEntity.ok(this.indukitchenAiService.generateMoviesSiggestion(suggestProductDto.userPreferences()));
+    public ResponseEntity<String> generateProductSuggestion(@RequestBody SuggestProductDto suggestProductDto) {
+        return ResponseEntity.ok(this.indukitchenAiService.generateProductSuggestion(suggestProductDto.userPreferences()));
     }
 
     //PUT
 //    @PutMapping("/{id}")
-//    public ResponseEntity<ProductoDto> update(@PathVariable long id, @RequestBody @Valid UpdateProductoDto updateMovieDto) {
-//        return ResponseEntity.ok(this.productoService.update(id, updateMovieDto));
+//    public ResponseEntity<ClienteDto> update(@PathVariable long id, @RequestBody @Valid UpdateClienteDto updateClienteDto) {
+//        return ResponseEntity.ok(this.productoService.(id, updateMovieDto));
 //    }
 
     @DeleteMapping("/{id}")

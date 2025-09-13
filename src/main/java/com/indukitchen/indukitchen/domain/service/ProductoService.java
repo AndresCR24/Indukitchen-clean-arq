@@ -19,7 +19,7 @@ public class ProductoService {
     }
 
 
-    @Tool("Busca todos los productos que existan dentreo de la plataforma")
+    @Tool("Busca todos los productos que existan dentro de la plataforma")
     public List<ProductoDto> getAll() {
         return this.productoRepository.getAll();
     }
