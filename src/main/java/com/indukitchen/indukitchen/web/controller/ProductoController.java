@@ -1,69 +1,84 @@
-/*
 package com.indukitchen.indukitchen.web.controller;
 
 
-import org.indukitchen.backend.facturacion.dto.ProductoDto;
-import org.indukitchen.backend.facturacion.model.ProductoEntity;
-import org.indukitchen.backend.facturacion.service.ProductoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.indukitchen.indukitchen.domain.dto.ProductoDto;
+import com.indukitchen.indukitchen.domain.dto.SuggestProductDto;
+import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
+import com.indukitchen.indukitchen.domain.service.IndukitchenAiService;
+import com.indukitchen.indukitchen.domain.service.ProductoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/productos")
 public class ProductoController {
 
     private final ProductoService productoService;
+    private final IndukitchenAiService indukitchenAiService;
 
-    @Autowired
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService, IndukitchenAiService indukitchenAiService) {
         this.productoService = productoService;
+        this.indukitchenAiService = indukitchenAiService;
     }
 
-    //Operaciones básicas CRUD
-    @PostMapping
-    public ResponseEntity<ProductoDto> add(@RequestBody ProductoDto producto) {
-        ProductoDto productoGuardado = this.productoService.save(producto);
-        return ResponseEntity.ok(productoGuardado);
-    }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<ProductoDto>> getAll() {
-        List<ProductoDto> productos = this.productoService.getAll();
-        return ResponseEntity.ok(productos);
 
+        return ResponseEntity.ok(this.productoService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoDto> get(@PathVariable String id) {
-        ProductoDto producto = this.productoService.get(id);
-        if (producto != null) {
-            return ResponseEntity.ok(producto);
-        } else {
+    @Operation(
+            summary = "Get a product by id \n se obtiene una producto por su id",
+            description = "Retorna una producto",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "producto encontrada"),
+                    @ApiResponse(responseCode = "404", description = "producto no encontrada", content = @Content)
+            }
+    )
+    public ResponseEntity<ProductoDto> getById(@Parameter(description = "Identificador del producto") @PathVariable long id) {
+        ProductoDto productoDto = this.productoService.getById(id);
+
+        // Cuando es nulo
+        if (productoDto == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(productoDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductoDto> update(@PathVariable String id, @RequestBody ProductoDto producto) {
-        if (producto.getId() != null && producto.getId().equals(id) && this.productoService.exists(id)) {
-            ProductoDto productoActualizado = this.productoService.save(producto);
-            return ResponseEntity.ok(productoActualizado);
-        }
-
-        return ResponseEntity.badRequest().build();
+    //POST
+    @PostMapping()
+    public ResponseEntity<ProductoDto> add(@RequestBody ProductoDto productoDto) {
+        //Otra logica
+        //MovieDto movieDtoResponse = this.movieService.add(movieDto);
+        //return ResponseEntity.status(HttpStatus.CREATED).body(movieDtoResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.productoService.add(productoDto));
     }
+
+    @PostMapping("/suggest")
+    public ResponseEntity<String> generateMoviesSuggestion(@RequestBody SuggestProductDto suggestProductDto) {
+        return ResponseEntity.ok(this.indukitchenAiService.generateMoviesSiggestion(suggestProductDto.userPreferences()));
+    }
+
+    //PUT
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ProductoDto> update(@PathVariable long id, @RequestBody @Valid UpdateProductoDto updateMovieDto) {
+//        return ResponseEntity.ok(this.productoService.update(id, updateMovieDto));
+//    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        if (this.productoService.exists(id)) {
-            this.productoService.deleteProducto(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        this.productoService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
 
-*/

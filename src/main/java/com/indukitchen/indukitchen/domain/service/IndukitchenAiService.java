@@ -9,10 +9,10 @@ import dev.langchain4j.service.spring.AiService;
 public interface IndukitchenAiService {
 
     @UserMessage("""
-           Da un mensaje de saludo a la plataforma Indukitchen, di una frase donde se evidencie que somos
-           los mejores en estos productos de cocina industrial en colombia
+           Da un mensaje de saludo al usuario de la plataforma, di una frase donde se evidencie que somos
+           los mejores en estos productos de cocina industrial en colombia no te pases de 30 palabras
            """)
-    String generateGreeting(@V("plataform") String plataform);
+    String generateGreeting(String plataform);
 
     @SystemMessage("""
             Eres un experto en productos industriales de cocina que recomienda personalizadamente según los gustos del usuario.

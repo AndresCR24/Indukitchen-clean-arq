@@ -1,4 +1,7 @@
 package com.indukitchen.indukitchen.persistence.crud;
 
-public interface CrudClienteEntity {
+import com.indukitchen.indukitchen.persistence.entity.ClienteEntity;
+import org.springframework.data.repository.CrudRepository;
+
+public interface CrudClienteEntity extends CrudRepository<ClienteEntity, String> {
 }

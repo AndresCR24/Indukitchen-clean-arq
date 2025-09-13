@@ -1,9 +1,9 @@
-/*
 package com.indukitchen.indukitchen.domain.service;
 
-import org.indukitchen.backend.facturacion.mapper.ProductoMapper;
-import org.indukitchen.backend.facturacion.dto.ProductoDto;
-import org.indukitchen.backend.facturacion.repository.ProductoRepository;
+import com.indukitchen.indukitchen.domain.dto.ProductoDto;
+import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
+import com.indukitchen.indukitchen.domain.repository.ProductoRepository;
+import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,37 +13,32 @@ import java.util.UUID;
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
-    private final ProductoMapper productoMapper;
 
-
-    public ProductoService(ProductoRepository productoRepository, ProductoMapper productoMapper) {
+    public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
-        this.productoMapper = productoMapper;
     }
 
+
+    @Tool("Busca todos los productos que existan dentreo de la plataforma")
     public List<ProductoDto> getAll() {
-        return productoMapper.aDtos(this.productoRepository.findAll());
+        return this.productoRepository.getAll();
     }
 
-    public ProductoDto get(String idProducto) {
-        return this.productoMapper.aDto(
-                this.productoRepository.findById(UUID.fromString(idProducto)).orElse(null));
+    public ProductoDto getById(long id) {
+        return this.productoRepository.getById(id);
     }
 
-    public ProductoDto save(ProductoDto producto) {
-        return this.productoMapper.aDto(
-                this.productoRepository.save(
-                        this.productoMapper.aEntidad(producto)));
+    public ProductoDto add(ProductoDto productoDto) {
+        return this.productoRepository.save(productoDto);
     }
 
-    public boolean exists(String idProducto) {
-        return this.productoRepository.existsById(UUID.fromString(idProducto));
-    }
+//    public ProductoDto update(long id, UpdateProductoDto updateProductoDto) {
+//        return this.productoRepository.update(id, updateProductoDto);
+//    }
 
-    public void deleteProducto(String idProducto) {
-        this.productoRepository.deleteById(UUID.fromString(idProducto));
+    public void delete(long id) {
+        this.productoRepository.delete(id);
     }
 
 }
 
-*/

@@ -1,4 +1,17 @@
 package com.indukitchen.indukitchen.domain.dto;
 
-public record ProductoDto() {
+import java.math.BigDecimal;
+
+public record ProductoDto(
+        long id,
+        String nombre,
+        String descripcion,
+        BigDecimal precio,
+        Integer existencia,
+        Double peso,
+        String imagen
+        //LocalDateTime createdAt,
+        //LocalDateTime updatedAt,
+        //List<DetalleDto> detalles
+) {
 }

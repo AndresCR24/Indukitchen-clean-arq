@@ -1,4 +1,3 @@
-/*
 package com.indukitchen.indukitchen.web.controller;
 
 import com.indukitchen.indukitchen.domain.service.IndukitchenAiService;
@@ -25,4 +24,4 @@ public class HelloController {
 
 }
 
-*/
+
