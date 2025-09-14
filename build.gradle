@@ -54,6 +54,8 @@ dependencies {
     implementation "com.itextpdf:kernel:8.0.2"
     implementation "com.itextpdf:layout:8.0.2"
     implementation "com.itextpdf:io:8.0.2"
+
+    testImplementation 'com.h2database:h2'
 }
 
     tasks.named('test') {

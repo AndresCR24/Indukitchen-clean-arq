@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +80,7 @@ public class CarritoController {
     }
 
     @PostMapping("/procesar")
-    public ResponseEntity<CarritoDto> procesar(@RequestBody ProcesarCarritoRequestDto req) throws MessagingException {
+    public ResponseEntity<CarritoDto> procesar(@RequestBody ProcesarCarritoRequestDto req) {
         CarritoDto result = carritoService.procesarCarrito(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }

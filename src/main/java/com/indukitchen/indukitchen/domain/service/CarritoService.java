@@ -8,26 +8,21 @@ import com.indukitchen.indukitchen.domain.dto.request.ProcesarCarritoRequestDto;
 import com.indukitchen.indukitchen.domain.dto.update.UpdateCarritoDto;
 import com.indukitchen.indukitchen.domain.repository.CarritoRepository;
 import com.indukitchen.indukitchen.domain.repository.ClienteRepository;
-import com.indukitchen.indukitchen.domain.repository.ProductoRepository;
-import com.indukitchen.indukitchen.persistence.entity.FacturaEntity;
 import jakarta.mail.MessagingException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class CarritoService {
 
     private final CarritoRepository carritoRepository;
-    private final ProductoRepository productoRepository; // sigue inyectado si lo necesitas en otros métodos
     private final ClienteRepository clienteRepository;
     private final FacturaService facturaService;
 
-    public CarritoService(CarritoRepository carritoRepository, ProductoRepository productoRepository, ClienteRepository clienteRepository, FacturaService facturaService) {
+    public CarritoService(CarritoRepository carritoRepository, ClienteRepository clienteRepository, FacturaService facturaService) {
         this.carritoRepository = carritoRepository;
-        this.productoRepository = productoRepository;
         this.clienteRepository = clienteRepository;
         this.facturaService = facturaService;
     }
@@ -46,10 +41,6 @@ public class CarritoService {
         return this.carritoRepository.save(createCarritoRequestDto);
     }
 
-//    public CarritoDto add(CarritoDto carritoDto) {
-//        return this.carritoRepository.save(carritoDto);
-//    }
-
     public CarritoDto update(long id, UpdateCarritoDto updateCarritoDto) {
         return this.carritoRepository.update(id, updateCarritoDto);
     }
@@ -63,7 +54,7 @@ public class CarritoService {
      * crea factura y envía email con PDF. Si falla el email, NO hace rollback.
      */
     @Transactional(noRollbackFor = MessagingException.class)
-    public CarritoDto procesarCarrito(ProcesarCarritoRequestDto procesarCarritoRequestDto) throws MessagingException {
+    public CarritoDto procesarCarrito(ProcesarCarritoRequestDto procesarCarritoRequestDto) {
         // 1) Validaciones mínimas
         if (procesarCarritoRequestDto == null || procesarCarritoRequestDto.cliente() == null)
             throw new IllegalArgumentException("Cliente es obligatorio");
@@ -92,10 +83,6 @@ public class CarritoService {
                 : (clienteSaved.correo() != null ? clienteSaved.correo() : null);
 
         if (to != null && !to.isBlank()) {
-            String subject = Objects.requireNonNullElse(procesarCarritoRequestDto.emailSubject(),
-                    "Factura #" + facturaCreada.id());
-            String text = Objects.requireNonNullElse(procesarCarritoRequestDto.emailText(),
-                    "Adjuntamos tu factura #" + facturaCreada.id() + ". ¡Gracias por tu compra!");
 
             // Genera el PDF y envía por correo usando el id de la factura
             this.facturaService.generarEnviarFactura(facturaCreada.id());
