@@ -22,13 +22,13 @@ public class FacturaEntity {
     @Column(name = "id_metodo_pago")
     private Integer idMetodoPago;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", nullable = false)
+//    @UpdateTimestamp
+//    private LocalDateTime updatedAt;
 
     @OneToOne
     @JoinColumn(name = "id_carrito", referencedColumnName = "id", insertable = false, updatable = false)
@@ -62,21 +62,21 @@ public class FacturaEntity {
         this.idMetodoPago = idMetodoPago;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+//    public LocalDateTime getCreatedAt() {
+//        return createdAt;
+//    }
+//
+//    public void setCreatedAt(LocalDateTime createdAt) {
+//        this.createdAt = createdAt;
+//    }
+//
+//    public LocalDateTime getUpdatedAt() {
+//        return updatedAt;
+//    }
+//
+//    public void setUpdatedAt(LocalDateTime updatedAt) {
+//        this.updatedAt = updatedAt;
+//    }
 
     public CarritoEntity getCarritoFactura() {
         return carritoFactura;

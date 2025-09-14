@@ -35,13 +35,13 @@ public class ProductoEntity {
     @Column
     private String imagen;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at")
+//    @UpdateTimestamp
+//    private LocalDateTime updatedAt;
 
     /** Carritos que contienen este producto (lado inverso). */
     @ManyToMany(mappedBy = "productos")
@@ -63,17 +63,19 @@ public class ProductoEntity {
     public Integer getExistencia() { return existencia; }
     public void setExistencia(Integer existencia) { this.existencia = existencia; }
 
-    public Double getPeso() { return peso; }
+    public Double getPeso() {
+        return peso;
+    }
     public void setPeso(Double peso) { this.peso = peso; }
 
     public String getImagen() { return imagen; }
     public void setImagen(String imagen) { this.imagen = imagen; }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+//    public LocalDateTime getCreatedAt() { return createdAt; }
+//    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+//
+//    public LocalDateTime getUpdatedAt() { return updatedAt; }
+//    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     public List<CarritoEntity> getCarritos() { return carritos; }
     public void setCarritos(List<CarritoEntity> carritos) { this.carritos = carritos; }

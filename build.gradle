@@ -52,6 +52,7 @@ dependencies {
     implementation "com.itextpdf:io:8.0.2"
 
     // springSecurity
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
 }

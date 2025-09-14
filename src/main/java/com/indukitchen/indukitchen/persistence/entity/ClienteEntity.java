@@ -35,13 +35,23 @@ public class ClienteEntity {
     @Column(nullable = false, length = 17)
     private String telefono;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column(nullable = false, length = 200)
+    private String password;
 
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Boolean locked;
+
+    @Column(nullable = false)
+    private Boolean disabled;
+
+//    @Column(name = "created_at", nullable = false, updatable = false)
+//    @CreationTimestamp
+//    private LocalDateTime createdAt;
+//
+//    @Column(name = "updated_at", nullable = false)
+//    @UpdateTimestamp
+//    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "cliente")
     private List<CarritoEntity> carritos;
@@ -86,21 +96,21 @@ public class ClienteEntity {
         this.telefono = telefono;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+//    public LocalDateTime getCreatedAt() {
+//        return createdAt;
+//    }
+//
+//    public void setCreatedAt(LocalDateTime createdAt) {
+//        this.createdAt = createdAt;
+//    }
+//
+//    public LocalDateTime getUpdatedAt() {
+//        return updatedAt;
+//    }
+//
+//    public void setUpdatedAt(LocalDateTime updatedAt) {
+//        this.updatedAt = updatedAt;
+//    }
 
     public List<CarritoEntity> getCarritos() {
         return carritos;
@@ -108,5 +118,29 @@ public class ClienteEntity {
 
     public void setCarritos(List<CarritoEntity> carritos) {
         this.carritos = carritos;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 }
