@@ -118,9 +118,7 @@ public class FacturaService {
                     .setFontSize(20)
                     .setBold());
             document.add(new Paragraph("Factura ID: " + factura.getId()));
-            if (factura.getCreatedAt() != null) {
-                document.add(new Paragraph("Fecha: " + factura.getCreatedAt()));
-            }
+
             if (factura.getCarritoFactura() != null && factura.getCarritoFactura().getCliente() != null) {
                 var cli = factura.getCarritoFactura().getCliente();
                 document.add(new Paragraph("Cliente: " + safe(cli.getNombre())));

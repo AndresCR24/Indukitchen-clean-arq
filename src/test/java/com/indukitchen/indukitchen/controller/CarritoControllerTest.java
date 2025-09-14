@@ -7,7 +7,6 @@ import com.indukitchen.indukitchen.domain.dto.request.ProcesarCarritoRequestDto;
 import com.indukitchen.indukitchen.domain.dto.update.UpdateCarritoDto;
 import com.indukitchen.indukitchen.domain.service.CarritoService;
 import com.indukitchen.indukitchen.web.controller.CarritoController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CarritoControllerTest {
 
     @Autowired MockMvc mvc;
-    @Autowired ObjectMapper om;
+
 
     @MockitoBean
     CarritoService carritoService;
@@ -45,7 +44,7 @@ class CarritoControllerTest {
 
     @Test
     void getById_found_returns200() throws Exception {
-        given(carritoService.getById(1L)).willReturn(mock(CarritoDto.class)); // serializa {}
+        given(carritoService.getById(1L)).willReturn(mock(CarritoDto.class));
 
         mvc.perform(get("/carritos/1"))
                 .andExpect(status().isOk())

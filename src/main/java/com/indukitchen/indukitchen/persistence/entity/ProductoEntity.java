@@ -1,11 +1,7 @@
 package com.indukitchen.indukitchen.persistence.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +31,6 @@ public class ProductoEntity {
     @Column
     private String imagen;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
     /** Carritos que contienen este producto (lado inverso). */
     @ManyToMany(mappedBy = "productos")
     private List<CarritoEntity> carritos = new ArrayList<>();
@@ -68,12 +56,6 @@ public class ProductoEntity {
 
     public String getImagen() { return imagen; }
     public void setImagen(String imagen) { this.imagen = imagen; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     public List<CarritoEntity> getCarritos() { return carritos; }
     public void setCarritos(List<CarritoEntity> carritos) { this.carritos = carritos; }

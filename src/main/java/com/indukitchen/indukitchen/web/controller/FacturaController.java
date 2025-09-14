@@ -78,7 +78,7 @@ public class FacturaController {
     }
 
     /** Descarga / visualiza el PDF de factura */
-    @GetMapping("/{id}/{pdf}")
+    @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> getFacturaPdf(@PathVariable long id) {
         var baos = facturaService.generateFacturaPdf(id);
         byte[] bytes = baos.toByteArray();

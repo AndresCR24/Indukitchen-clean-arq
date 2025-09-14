@@ -1,10 +1,6 @@
 package com.indukitchen.indukitchen.persistence.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +22,6 @@ public class CarritoEntity {
      */
     @Column(name = "cedula_cliente", nullable = false)
     private String idCliente;
-
-    /** Fecha y hora de creación del carrito. */
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    /** Fecha y hora de la última actualización del carrito. */
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     /** Cliente asociado con el carrito. */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -75,22 +61,6 @@ public class CarritoEntity {
 
     public void setCliente(ClienteEntity cliente) {
         this.cliente = cliente;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getIdCliente() {

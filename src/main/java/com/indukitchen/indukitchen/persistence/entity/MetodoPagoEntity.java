@@ -2,11 +2,6 @@ package com.indukitchen.indukitchen.persistence.entity;
 
 import jakarta.persistence.*;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "metodos_pago")
 
@@ -21,14 +16,6 @@ public class MetodoPagoEntity {
 
     @Column
     private Boolean tarjeta;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     public long getId() {
         return id;
@@ -54,20 +41,5 @@ public class MetodoPagoEntity {
         this.tarjeta = tarjeta;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
 
