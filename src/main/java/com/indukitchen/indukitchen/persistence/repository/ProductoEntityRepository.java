@@ -1,14 +1,12 @@
 package com.indukitchen.indukitchen.persistence.repository;
 
 import com.indukitchen.indukitchen.domain.dto.ProductoDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
 import com.indukitchen.indukitchen.domain.repository.ProductoRepository;
 import com.indukitchen.indukitchen.persistence.crud.CrudProductoEntity;
 import com.indukitchen.indukitchen.persistence.entity.ProductoEntity;
 import com.indukitchen.indukitchen.persistence.mapper.ProductoMapper;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Repository

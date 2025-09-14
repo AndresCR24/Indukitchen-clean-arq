@@ -1,4 +1,11 @@
 package com.indukitchen.indukitchen.domain.dto;
 
-public record CarritoDto() {
+import java.util.List;
+
+public record CarritoDto(
+
+        long id,
+        String idCliente,
+        List<ProductoDto> productos
+) {
 }

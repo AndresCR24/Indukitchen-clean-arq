@@ -1,12 +1,12 @@
 package com.indukitchen.indukitchen.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,86 +43,38 @@ public class ProductoEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DetalleEntity> detalles;
+    /** Carritos que contienen este producto (lado inverso). */
+    @ManyToMany(mappedBy = "productos")
+    private List<CarritoEntity> carritos = new ArrayList<>();
 
-    public long getId() {
-        return id;
-    }
+    // Getters & Setters
+    public long getId() { return id; }
+    public void setId(long id) { this.id = id; }
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public BigDecimal getPrecio() { return precio; }
+    public void setPrecio(BigDecimal precio) { this.precio = precio; }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public Integer getExistencia() { return existencia; }
+    public void setExistencia(Integer existencia) { this.existencia = existencia; }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    public Double getPeso() { return peso; }
+    public void setPeso(Double peso) { this.peso = peso; }
 
-    public BigDecimal getPrecio() {
-        return precio;
-    }
+    public String getImagen() { return imagen; }
+    public void setImagen(String imagen) { this.imagen = imagen; }
 
-    public void setPrecio(BigDecimal precio) {
-        this.precio = precio;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    public Integer getExistencia() {
-        return existencia;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public void setExistencia(Integer existencia) {
-        this.existencia = existencia;
-    }
-
-    public Double getPeso() {
-        return peso;
-    }
-
-    public void setPeso(Double peso) {
-        this.peso = peso;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public List<DetalleEntity> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetalleEntity> detalles) {
-        this.detalles = detalles;
-    }
+    public List<CarritoEntity> getCarritos() { return carritos; }
+    public void setCarritos(List<CarritoEntity> carritos) { this.carritos = carritos; }
 }

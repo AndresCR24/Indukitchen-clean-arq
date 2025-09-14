@@ -1,7 +1,7 @@
 package com.indukitchen.indukitchen.persistence.repository;
 
 import com.indukitchen.indukitchen.domain.dto.ClienteDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
+import com.indukitchen.indukitchen.domain.dto.update.UpdateClienteDto;
 import com.indukitchen.indukitchen.domain.repository.ClienteRepository;
 import com.indukitchen.indukitchen.persistence.crud.CrudClienteEntity;
 import com.indukitchen.indukitchen.persistence.entity.ClienteEntity;

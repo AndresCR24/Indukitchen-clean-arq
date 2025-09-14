@@ -1,8 +1,8 @@
 package com.indukitchen.indukitchen.domain.repository;
 
 import com.indukitchen.indukitchen.domain.dto.ClienteDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
-import org.springframework.stereotype.Repository;
+import com.indukitchen.indukitchen.domain.dto.update.UpdateClienteDto;
+
 import java.util.List;
 
 public interface ClienteRepository {

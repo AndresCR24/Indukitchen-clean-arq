@@ -1,13 +1,11 @@
 package com.indukitchen.indukitchen.domain.service;
 
 import com.indukitchen.indukitchen.domain.dto.ProductoDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateProductoDto;
 import com.indukitchen.indukitchen.domain.repository.ProductoRepository;
 import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ProductoService {

@@ -2,7 +2,7 @@ package com.indukitchen.indukitchen.web.controller;
 
 import com.indukitchen.indukitchen.domain.dto.ClienteDto;
 import com.indukitchen.indukitchen.domain.dto.SuggestClienteDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
+import com.indukitchen.indukitchen.domain.dto.update.UpdateClienteDto;
 import com.indukitchen.indukitchen.domain.service.ClienteService;
 import com.indukitchen.indukitchen.domain.service.IndukitchenAiService;
 import io.swagger.v3.oas.annotations.Operation;

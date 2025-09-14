@@ -1,4 +1,4 @@
-package com.indukitchen.indukitchen.domain.dto;
+package com.indukitchen.indukitchen.domain.dto.update;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package com.indukitchen.indukitchen.domain.service;
 
 import com.indukitchen.indukitchen.domain.dto.ClienteDto;
-import com.indukitchen.indukitchen.domain.dto.UpdateClienteDto;
+import com.indukitchen.indukitchen.domain.dto.update.UpdateClienteDto;
 import com.indukitchen.indukitchen.domain.repository.ClienteRepository;
 import dev.langchain4j.agent.tool.Tool;
 
