@@ -50,6 +50,10 @@ dependencies {
     implementation "com.itextpdf:kernel:8.0.2"
     implementation "com.itextpdf:layout:8.0.2"
     implementation "com.itextpdf:io:8.0.2"
+
+    // springSecurity
+    testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('test') {
