@@ -7,4 +7,5 @@ public record FacturaDto(
         //LocalDateTime createdAt,
         //LocalDateTime updatedAt
 ) {
+
 }

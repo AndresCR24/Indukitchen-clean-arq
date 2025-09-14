@@ -71,15 +71,8 @@ public class CarritoEntityRepository implements CarritoRepository {
         CarritoEntity carritoEntity = this.crudCarritoEntity.findById(id).orElse(null);
         if (carritoEntity == null) return null;
 
-        // ⚠️ No cambies la PK:
-        // carritoEntity.setId(updateCarritoDto.id());  // <- evita esto
-
         // Actualiza campos permitidos
         carritoEntity.setIdCliente(updateCarritoDto.idCliente());
-
-        // Si también quieres poder reemplazar productos en update, agrega aquí la lógica:
-        // List<ProductoEntity> productos = crudProductoEntity.findAllById(updateCarritoDto.productoIds());
-        // carritoEntity.setProductos(productos);
 
         return this.carritoMapper.toDto(this.crudCarritoEntity.save(carritoEntity));
     }

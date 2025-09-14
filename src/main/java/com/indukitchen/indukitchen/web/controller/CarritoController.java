@@ -2,12 +2,14 @@ package com.indukitchen.indukitchen.web.controller;
 
 import com.indukitchen.indukitchen.domain.dto.*;
 import com.indukitchen.indukitchen.domain.dto.request.CreateCarritoRequestDto;
+import com.indukitchen.indukitchen.domain.dto.request.ProcesarCarritoRequestDto;
 import com.indukitchen.indukitchen.domain.dto.update.UpdateCarritoDto;
 import com.indukitchen.indukitchen.domain.service.CarritoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,6 +78,12 @@ public class CarritoController {
     public ResponseEntity<Void> delete(@PathVariable long id) {
         this.carritoService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/procesar")
+    public ResponseEntity<CarritoDto> procesar(@RequestBody ProcesarCarritoRequestDto req) throws MessagingException {
+        CarritoDto result = carritoService.procesarCarrito(req);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }
 

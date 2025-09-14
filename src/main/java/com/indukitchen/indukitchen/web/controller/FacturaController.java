@@ -1,17 +1,13 @@
 package com.indukitchen.indukitchen.web.controller;
 
 import com.indukitchen.indukitchen.domain.dto.FacturaDto;
-import com.indukitchen.indukitchen.domain.dto.ProductoDto;
-import com.indukitchen.indukitchen.domain.dto.SuggestProductDto;
 import com.indukitchen.indukitchen.domain.service.FacturaService;
-import com.indukitchen.indukitchen.domain.service.IndukitchenAiService;
-import com.indukitchen.indukitchen.domain.service.ProductoService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,4 +76,33 @@ public class FacturaController {
         this.facturaService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+    /** Descarga / visualiza el PDF de factura */
+    @GetMapping("/{id}/{pdf}")
+    public ResponseEntity<byte[]> getFacturaPdf(@PathVariable long id) {
+        var baos = facturaService.generateFacturaPdf(id);
+        byte[] bytes = baos.toByteArray();
+        if (bytes.length == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("factura-" + id + ".pdf").build());
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
+    /** Genera el PDF y lo envía por email como adjunto */
+//    @PostMapping("/{id}/{emai}")
+//    public ResponseEntity<Void> sendFacturaPdfByEmail(@PathVariable long id, @RequestBody EmailRequestDto emailRequestDto) throws MessagingException {
+//        facturaService.emailFacturaPdf(id, emailRequestDto.to(), emailRequestDto.subject(), emailRequestDto.text());
+//        // 202 Accepted: aceptado para envío
+//        return ResponseEntity.accepted().build();
+//    }
+
+    @PostMapping("/{id}/email")
+    public ResponseEntity<Void> sendFacturaEmail(@PathVariable long id) {
+        facturaService.generarEnviarFactura(id); // usa el método que ya tienes en FacturaService
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
 }

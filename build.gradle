@@ -43,6 +43,13 @@ dependencies {
 
     //DOc OpenApi
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13'
+
+    //
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // iText 8 (PDF)
+    implementation "com.itextpdf:kernel:8.0.2"
+    implementation "com.itextpdf:layout:8.0.2"
+    implementation "com.itextpdf:io:8.0.2"
 }
 
 tasks.named('test') {
