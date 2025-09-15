@@ -7,11 +7,4 @@ import java.util.Optional;
 
 public interface CrudFacturaEntity extends JpaRepository<FacturaEntity, Long> {
 
-    @Override
-    @EntityGraph(attributePaths = {
-            "carritoFactura",
-            "carritoFactura.cliente",
-            "carritoFactura.productos"
-    })
-    Optional<FacturaEntity> findById(Long id);
 }
