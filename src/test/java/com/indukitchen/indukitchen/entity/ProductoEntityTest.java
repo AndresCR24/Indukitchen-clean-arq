@@ -35,9 +35,6 @@ class ProductoEntityTest {
         c.setNombre("Nombre");
         c.setDireccion("Dir corta 123");
         c.setTelefono("3001234567");
-        c.setPassword("pwd");
-        c.setLocked(false);
-        c.setDisabled(false);
         // correo es nullable
         return c;
     }

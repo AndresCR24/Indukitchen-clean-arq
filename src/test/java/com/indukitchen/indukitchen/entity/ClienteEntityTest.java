@@ -29,9 +29,7 @@ class ClienteEntityTest {
         // Campos NOT NULL en la entidad
         c.setDireccion("Calle 123");
         c.setTelefono("3001234567"); // <= 17 chars
-        c.setPassword("pwd");
-        c.setLocked(false);
-        c.setDisabled(false);
+
         return c;
     }
 
@@ -52,9 +50,8 @@ class ClienteEntityTest {
         assertEquals("ana@dom.com", found.getCorreo());
         assertEquals("Calle 123", found.getDireccion());
         assertEquals("3001234567", found.getTelefono());
-        assertEquals("pwd", found.getPassword());
-        assertFalse(found.getLocked());
-        assertFalse(found.getDisabled());
+
+
         assertNotNull(found.getCarritos());
         assertTrue(found.getCarritos().isEmpty());
     }
@@ -118,9 +115,7 @@ class ClienteEntityTest {
         managed.setCorreo("mia+u@dom.com");
         managed.setDireccion("Av 45 #10-20");
         managed.setTelefono("3110000000");
-        managed.setPassword("pwd2");
-        managed.setLocked(true);
-        managed.setDisabled(true);
+
         em.flush();
         em.clear();
 
@@ -130,9 +125,8 @@ class ClienteEntityTest {
         assertEquals("mia+u@dom.com", r.getCorreo());
         assertEquals("Av 45 #10-20", r.getDireccion());
         assertEquals("3110000000", r.getTelefono());
-        assertEquals("pwd2", r.getPassword());
-        assertTrue(r.getLocked());
-        assertTrue(r.getDisabled());
+
+
     }
 }
 

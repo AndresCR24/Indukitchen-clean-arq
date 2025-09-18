@@ -33,9 +33,7 @@ class FacturaEntityTest {
         c.setDireccion("Calle 1 #2-3");
         c.setCorreo(correo);
         c.setTelefono("3000000000");
-        c.setPassword("secret");
-        c.setLocked(false);
-        c.setDisabled(false);
+
         return c;
     }
 

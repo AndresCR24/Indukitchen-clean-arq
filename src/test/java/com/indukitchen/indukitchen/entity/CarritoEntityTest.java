@@ -34,9 +34,6 @@ class CarritoEntityTest {
         // Campos NOT NULL según el esquema impreso por Hibernate:
         c.setTelefono("0000000");      // <= 17 chars
         c.setDireccion("Calle 1");     // <= 40 chars
-        c.setPassword("secret");       // <= 200 chars
-        c.setDisabled(false);
-        c.setLocked(false);
         return c;
     }
 

@@ -38,9 +38,7 @@ class ClienteEntityRepositoryIT {
         c.setDireccion("Calle 123");
         c.setCorreo(cedula.toLowerCase() + "@dom.com");
         c.setTelefono("3000000000");
-        c.setPassword("pwd");       // NOT NULL en tu schema
-        c.setLocked(false);         // NOT NULL
-        c.setDisabled(false);       // NOT NULL
+     // NOT NULL
         em.persist(c);
         return c;
     }

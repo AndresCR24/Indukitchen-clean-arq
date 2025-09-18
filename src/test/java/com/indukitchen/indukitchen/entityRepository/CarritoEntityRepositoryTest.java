@@ -44,9 +44,7 @@ class CarritoEntityRepositoryIT {
         c.setDireccion("Direccion " + cedula);
         c.setCorreo(cedula.toLowerCase() + "@dom.com");
         c.setTelefono("3000000000");
-        c.setPassword("pwd");
-        c.setLocked(false);
-        c.setDisabled(false);
+
         em.persist(c);
         return c;
     }
