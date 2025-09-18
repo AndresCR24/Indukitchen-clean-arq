@@ -26,15 +26,15 @@ public class ClienteEntity {
     @Column(nullable = false, length = 17)
     private String telefono;
 
-    @Column(nullable = false, length = 200)
-    private String password;
+//    @Column()
+//    private String password;
+//
 
-
-    @Column(nullable = false)
-    private Boolean locked;
-
-    @Column(nullable = false)
-    private Boolean disabled;
+//    @Column()
+//    private Boolean locked;
+//
+//    @Column()
+//    private Boolean disabled;
 
     @OneToMany(mappedBy = "cliente")
     private List<CarritoEntity> carritos;
@@ -87,27 +87,4 @@ public class ClienteEntity {
         this.carritos = carritos;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Boolean getLocked() {
-        return locked;
-    }
-
-    public void setLocked(Boolean locked) {
-        this.locked = locked;
-    }
-
-    public Boolean getDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(Boolean disabled) {
-        this.disabled = disabled;
-    }
 }

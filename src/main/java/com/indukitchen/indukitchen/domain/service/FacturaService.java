@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -99,18 +100,20 @@ public class FacturaService {
      */
     public ByteArrayOutputStream generateFacturaPdf(FacturaEntity factura) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
+
             PdfWriter writer = new PdfWriter(out);
             PdfDocument pdfDoc = new PdfDocument(writer);
             Document document = new Document(pdfDoc);
 
             // Logo (opcional)
-            try (InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo.png")) {
-                if (imageStream != null) {
-                    ImageData imageData = ImageDataFactory.create(imageStream.readAllBytes());
-                    document.add(new Image(imageData).setHorizontalAlignment(HorizontalAlignment.CENTER));
-                }
-            }
+
+        try (InputStream imageStream = getClass().getClassLoader().getResourceAsStream("logo.png")) {
+            byte[] imageBytes = imageStream.readAllBytes();
+            ImageData imageData = ImageDataFactory.create(imageBytes);
+            document.add(new Image(imageData).setHorizontalAlignment(HorizontalAlignment.CENTER));
+        } catch (IOException e) {
+            e.printStackTrace(); // Manejo básico de error
+        }
 
             // Encabezado
             document.add(new Paragraph("Factura")
@@ -169,9 +172,7 @@ public class FacturaService {
                     .setTextAlignment(TextAlignment.RIGHT).setFontSize(14).setBold());
 
             document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
         return out;
     }
 
