@@ -288,8 +288,8 @@ class ProductoDtoTest {
         );
 
         // Assert
-        assertThat(dto.nombre()).contains("Ñoquis").contains("&").contains("Café");
-        assertThat(dto.descripcion()).contains("áccéntos").contains("@#$%");
+        assertThat(dto.nombre()).contains("Ñoquis", "&", "Café");
+        assertThat(dto.descripcion()).contains("áccéntos", "@#$%");
         assertThat(dto.imagen()).contains("ñoquis_café");
     }
 
@@ -336,8 +336,9 @@ class ProductoDtoTest {
         ProductoDto dto = new ProductoDto(1L, "Test", longDesc, new BigDecimal("10"), 1, 1.0, "img");
 
         // Assert
-        assertThat(dto.descripcion()).hasSize(longDesc.length());
-        assertThat(dto.descripcion()).startsWith("Esta es una descripción");
+        assertThat(dto.descripcion())
+                .hasSize(longDesc.length())
+                .startsWith("Esta es una descripción");
     }
 
     @Test

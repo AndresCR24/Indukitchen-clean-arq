@@ -58,8 +58,9 @@ class SuggestClienteDtoTest {
         SuggestClienteDto dto = new SuggestClienteDto(longPreferences);
 
         // Assert
-        assertThat(dto.userPreferences()).isEqualTo(longPreferences);
-        assertThat(dto.userPreferences()).hasSize(longPreferences.length());
+        assertThat(dto.userPreferences())
+                .isEqualTo(longPreferences)
+                .hasSize(longPreferences.length());
     }
 
     @Test
@@ -246,9 +247,10 @@ class SuggestClienteDtoTest {
         SuggestClienteDto dto = new SuggestClienteDto("   ");
 
         // Assert
-        assertThat(dto.userPreferences()).isEqualTo("   ");
-        assertThat(dto.userPreferences()).isNotEmpty();
-        assertThat(dto.userPreferences()).isBlank();
+        assertThat(dto.userPreferences())
+                .isEqualTo("   ")
+                .isNotEmpty()
+                .isBlank();
     }
 
     @Test
@@ -259,10 +261,7 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("\n")
-                .contains("\t")
-                .contains("Tipo A")
-                .contains("frecuentes");
+                .contains("\n", "\t", "Tipo A", "frecuentes");
     }
 
     @Test
@@ -273,9 +272,7 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("$50,000")
-                .contains("USD")
-                .contains(">");
+                .contains("$50,000", "USD", ">");
     }
 
     @Test
@@ -288,9 +285,7 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("admin@restaurant.com")
-                .contains("ventas@hotel.com")
-                .contains("@");
+                .contains("admin@restaurant.com", "ventas@hotel.com", "@");
     }
 
     @Test
@@ -303,9 +298,6 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("https://")
-                .contains("http://")
-                .contains("restaurant1.com");
+                .contains("https://", "http://", "restaurant1.com");
     }
 }
-

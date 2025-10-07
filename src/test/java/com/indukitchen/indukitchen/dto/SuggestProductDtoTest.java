@@ -57,8 +57,9 @@ class SuggestProductDtoTest {
         SuggestProductDto dto = new SuggestProductDto(longPreferences);
 
         // Assert
-        assertThat(dto.userPreferences()).isEqualTo(longPreferences);
-        assertThat(dto.userPreferences()).hasSize(longPreferences.length());
+        assertThat(dto.userPreferences())
+                .isEqualTo(longPreferences)
+                .hasSize(longPreferences.length());
     }
 
     @Test
@@ -134,10 +135,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("Café")
-                .contains("&")
-                .contains("áccéntos")
-                .contains("@#$%");
+                .contains("Café", "&", "áccéntos", "@#$%");
     }
 
     @Test
@@ -233,10 +231,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("Rice")
-                .contains("Riz")
-                .contains("米")
-                .contains("Arroz");
+                .contains("Rice", "Riz", "米", "Arroz");
     }
 
     @Test
@@ -246,9 +241,10 @@ class SuggestProductDtoTest {
         SuggestProductDto dto = new SuggestProductDto("   ");
 
         // Assert
-        assertThat(dto.userPreferences()).isEqualTo("   ");
-        assertThat(dto.userPreferences()).isNotEmpty();
-        assertThat(dto.userPreferences()).isBlank();
+        assertThat(dto.userPreferences())
+                .isEqualTo("   ")
+                .isNotEmpty()
+                .isBlank();
     }
 
     @Test
@@ -259,10 +255,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("\n")
-                .contains("\t")
-                .contains("línea1")
-                .contains("línea2");
+                .contains("\n", "\t", "línea1", "línea2");
     }
 
     @Test
@@ -273,10 +266,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(dto.userPreferences())
-                .contains("🍕")
-                .contains("🍔")
-                .contains("🍰")
-                .contains("Pizza");
+                .contains("🍕", "🍔", "🍰", "Pizza");
     }
 }
 
