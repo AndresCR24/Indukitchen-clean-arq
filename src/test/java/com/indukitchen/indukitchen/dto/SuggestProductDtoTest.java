@@ -108,8 +108,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("SuggestProductDto")
-                .contains("userPreferences=productos frescos");
+                .contains("SuggestProductDto", "userPreferences=productos frescos");
     }
 
     @Test
@@ -123,8 +122,7 @@ class SuggestProductDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("SuggestProductDto")
-                .contains("userPreferences=null");
+                .contains("SuggestProductDto", "userPreferences=null");
     }
 
     @Test
@@ -146,8 +144,9 @@ class SuggestProductDtoTest {
         SuggestProductDto b = new SuggestProductDto(null);
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 
     @Test
@@ -158,8 +157,9 @@ class SuggestProductDtoTest {
         SuggestProductDto b = new SuggestProductDto("");
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 
     @Test
@@ -269,4 +269,3 @@ class SuggestProductDtoTest {
                 .contains("🍕", "🍔", "🍰", "Pizza");
     }
 }
-
