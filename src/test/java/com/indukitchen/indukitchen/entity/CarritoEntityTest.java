@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -51,7 +51,7 @@ class CarritoEntityTest {
 
     @Test
     void persist_and_load_basic_mappings_and_relations() {
-        // given: cliente y productos existentes
+        // Arrange: preparar cliente y productos existentes
         var cli = newCliente("C-1", "Ana", "ana@dominio.com");
         em.persist(cli);
 
@@ -60,7 +60,7 @@ class CarritoEntityTest {
         em.persist(p1);
         em.persist(p2);
 
-        // and: carrito con idCliente + productos
+        // Arrange: crear carrito con idCliente y lista de productos
         var carrito = new CarritoEntity();
         carrito.setIdCliente("C-1");
         carrito.setProductos(List.of(p1, p2));
@@ -68,25 +68,29 @@ class CarritoEntityTest {
         em.flush();
         em.clear();
 
-        // when: recargamos el carrito
+        // Act: recuperar carrito desde la base de datos
         var found = em.find(CarritoEntity.class, carrito.getId());
-        assertNotNull(found);
-        assertEquals("C-1", found.getIdCliente());
-        assertEquals(2, found.getProductos().size());
 
-        // then: @ManyToOne LAZY (sin forzar carga)
+        // Assert: verificar mapeos básicos y relaciones
+        assertThat(found).isNotNull();
+        assertThat(found.getIdCliente()).isEqualTo("C-1");
+        assertThat(found.getProductos()).hasSize(2);
+
+        // Assert: asociación ManyToOne debe ser LAZY inicialmente
         var util = Persistence.getPersistenceUtil();
-        assertFalse(util.isLoaded(found, "cliente"), "Cliente debería ser LAZY inicialmente");
+        assertThat(util.isLoaded(found, "cliente"))
+            .withFailMessage("Cliente debería ser LAZY inicialmente")
+            .isFalse();
 
-        // al acceder, debería cargar y coincidir la cédula
+        // Act & Assert: al acceder, se carga la entidad y cédula coincide
         var clienteLoaded = found.getCliente();
-        assertNotNull(clienteLoaded);
-        assertEquals("C-1", clienteLoaded.getCedula());
+        assertThat(clienteLoaded).isNotNull();
+        assertThat(clienteLoaded.getCedula()).isEqualTo("C-1");
     }
 
     @Test
     void join_table_rows_are_created_correctly() {
-        // given
+        // Arrange: preparar datos iniciales
         var cli = newCliente("C-2", "Luis", "luis@dominio.com");
         em.persist(cli);
 
@@ -106,21 +110,25 @@ class CarritoEntityTest {
         Long p2Id = p2.getId();
         em.clear();
 
-        // when
+        // Act: recargar carrito
         var reloaded = em.find(CarritoEntity.class, carritoId);
 
-        // then: relación ManyToMany poblada
-        assertNotNull(reloaded);
-        assertEquals(2, reloaded.getProductos().size(), "El carrito debe tener 2 productos");
+        // Assert: relación ManyToMany debe contener dos productos
+        assertThat(reloaded).isNotNull();
+        assertThat(reloaded.getProductos())
+            .withFailMessage("El carrito debe tener 2 productos")
+            .hasSize(2);
 
-        // y la tabla puente tiene exactamente 2 filas para este carrito
+        // Assert: tabla puente debe tener exactamente 2 filas para este carrito
         Number count = (Number) em.createNativeQuery(
                         "select count(*) from carrito_productos where carrito_id = ?")
                 .setParameter(1, carritoId)
                 .getSingleResult();
-        assertEquals(2L, count.longValue(), "Debe haber 2 filas en carrito_productos");
+        assertThat(count.longValue())
+            .withFailMessage("Debe haber 2 filas en carrito_productos")
+            .isEqualTo(2L);
 
-        // y los IDs de producto coinciden exactamente
+        // Assert: los IDs de producto enlazados coinciden
         @SuppressWarnings("unchecked")
         var prodIds = (List<Number>) em.createNativeQuery(
                         "select producto_id from carrito_productos where carrito_id = ?")
@@ -129,12 +137,14 @@ class CarritoEntityTest {
 
         var expected = List.of(p1Id, p2Id).stream().sorted().toList();
         var actual = prodIds.stream().map(Number::longValue).sorted().toList();
-        assertEquals(expected, actual, "Los productos enlazados no coinciden");
+        assertThat(actual)
+            .withFailMessage("Los productos enlazados no coinciden")
+            .isEqualTo(expected);
     }
 
     @Test
     void updating_idCliente_switches_association_via_fk_column() {
-        // given: dos clientes
+        // Arrange: dos clientes y carrito inicial
         var c1 = newCliente("C-A", "A", "a@dom.com");
         var c2 = newCliente("C-B", "B", "b@dom.com");
         em.persist(c1);
@@ -146,21 +156,21 @@ class CarritoEntityTest {
         em.flush();
         em.clear();
 
-        // when: cambiamos la FK (idCliente)
+        // Act: cambiar la FK idCliente
         var managed = em.find(CarritoEntity.class, carrito.getId());
         managed.setIdCliente("C-B");
         em.flush();
         em.clear();
 
-        // then: la asociación ManyToOne refleja el nuevo cliente
+        // Assert: la asociación ManyToOne refleja el nuevo cliente
         var reloaded = em.find(CarritoEntity.class, carrito.getId());
-        assertEquals("C-B", reloaded.getIdCliente());
-        assertEquals("C-B", reloaded.getCliente().getCedula());
+        assertThat(reloaded.getIdCliente()).isEqualTo("C-B");
+        assertThat(reloaded.getCliente().getCedula()).isEqualTo("C-B");
     }
 
     @Test
     void mutating_product_list_persists_join_rows() {
-        // given
+        // Arrange: cliente y productos iniciales
         var cli = newCliente("C-Z", "Zoe", "z@dom.com");
         em.persist(cli);
 
@@ -176,14 +186,13 @@ class CarritoEntityTest {
         em.persist(carrito);
         em.flush();
 
-        // when: añadimos un producto más
+        // Act: añadir un producto más a la lista mutable
         var managed = em.find(CarritoEntity.class, carrito.getId());
         managed.getProductos().add(p3);
         em.flush();
 
-        // then
+        // Assert: la lista de productos presenta 3 elementos
         var reloaded = em.find(CarritoEntity.class, carrito.getId());
-        assertEquals(3, reloaded.getProductos().size());
+        assertThat(reloaded.getProductos()).hasSize(3);
     }
 }
-

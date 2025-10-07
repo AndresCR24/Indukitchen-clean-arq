@@ -72,8 +72,9 @@ class SuggestClienteDtoTest {
         SuggestClienteDto c = new SuggestClienteDto("hoteles");
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a).isNotEqualTo(c);
+        assertThat(a)
+                .isEqualTo(b)
+                .isNotEqualTo(c);
     }
 
     @Test
@@ -84,7 +85,7 @@ class SuggestClienteDtoTest {
         SuggestClienteDto b = new SuggestClienteDto("cafeterías");
 
         // Assert
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a).hasSameHashCodeAs(b);
     }
 
     @Test
@@ -95,7 +96,7 @@ class SuggestClienteDtoTest {
         SuggestClienteDto b = new SuggestClienteDto("sector B");
 
         // Assert
-        assertThat(a.hashCode()).isNotEqualTo(b.hashCode());
+        assertThat(a).doesNotHaveSameHashCodeAs(b);
     }
 
     @Test
@@ -109,8 +110,7 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("SuggestClienteDto")
-                .contains("userPreferences=clientes premium");
+                .contains("SuggestClienteDto", "userPreferences=clientes premium");
     }
 
     @Test
@@ -124,8 +124,7 @@ class SuggestClienteDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("SuggestClienteDto")
-                .contains("userPreferences=null");
+                .contains("SuggestClienteDto", "userPreferences=null");
     }
 
     @Test
@@ -150,8 +149,9 @@ class SuggestClienteDtoTest {
         SuggestClienteDto b = new SuggestClienteDto(null);
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 
     @Test
@@ -162,8 +162,9 @@ class SuggestClienteDtoTest {
         SuggestClienteDto b = new SuggestClienteDto("");
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 
     @Test

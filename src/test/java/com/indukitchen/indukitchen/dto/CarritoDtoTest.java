@@ -3,10 +3,14 @@ package com.indukitchen.indukitchen.dto;
 import com.indukitchen.indukitchen.domain.dto.CarritoDto;
 import com.indukitchen.indukitchen.domain.dto.ProductoDto;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 class CarritoDtoTest {
 
@@ -48,14 +52,70 @@ class CarritoDtoTest {
     }
 
     @Test
-    void list_reference_is_not_copied_shallow_semantics() {
-        var mutable = new ArrayList<ProductoDto>();
-        var dto = new CarritoDto(3L, "C3", mutable);
+    @DisplayName("Record mantiene la referencia de la lista (shallow copy)")
+    void list_reference_is_not_copied() {
+        // Arrange
+        ArrayList<ProductoDto> mutableList = new ArrayList<>();
+        ProductoDto producto = new ProductoDto(1L, "Arroz", "Premium",
+                new BigDecimal("5000"), 100, 1.0, "arroz.jpg");
 
-        // añadimos un elemento (puede ser null; no dependemos de la forma de ProductoDto)
-        mutable.add(null);
-        assertEquals(1, dto.productos().size(), "El record mantiene la misma referencia de lista");
+        // Act
+        CarritoDto dto = new CarritoDto(3L, "C3", mutableList);
+        mutableList.add(producto);
+
+        // Assert: el record mantiene la misma referencia de lista
+        assertThat(dto.productos())
+                .isSameAs(mutableList)
+                .hasSize(1)
+                .containsExactly(producto);
+    }
+
+    @Test
+    @DisplayName("Record con múltiples productos")
+    void record_with_multiple_products() {
+        // Arrange
+        ProductoDto producto1 = new ProductoDto(1L, "Arroz", "Premium",
+                new BigDecimal("5000"), 100, 1.0, "arroz.jpg");
+        ProductoDto producto2 = new ProductoDto(2L, "Frijol", "Rojo",
+                new BigDecimal("3500"), 50, 0.5, "frijol.jpg");
+        ProductoDto producto3 = new ProductoDto(3L, "Pasta", "Italiana",
+                new BigDecimal("8000"), 200, 0.5, "pasta.jpg");
+
+        List<ProductoDto> productos = List.of(producto1, producto2, producto3);
+
+        // Act
+        CarritoDto dto = new CarritoDto(20L, "CLI-5", productos);
+
+        // Assert
+        assertThat(dto.productos())
+                .hasSize(3)
+                .containsExactly(producto1, producto2, producto3);
+        assertThat(dto.id()).isEqualTo(20L);
+        assertThat(dto.idCliente()).isEqualTo("CLI-5");
+    }
+
+    @Test
+    @DisplayName("Record con ID cero y idCliente vacío")
+    void record_with_zero_id_and_empty_cliente() {
+        // Arrange & Act
+        CarritoDto dto = new CarritoDto(0L, "", List.of());
+
+        // Assert
+        assertThat(dto.id()).isZero();
+        assertThat(dto.idCliente()).isEmpty();
+        assertThat(dto.productos()).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Record con IDs negativos")
+    void record_with_negative_id() {
+        // Arrange & Act
+        CarritoDto dto = new CarritoDto(-1L, "CLI-NEG", List.of());
+
+        // Assert
+        assertThat(dto.id())
+                .isNegative()
+                .isEqualTo(-1L);
+        assertThat(dto.idCliente()).isEqualTo("CLI-NEG");
     }
 }
-
-

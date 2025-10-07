@@ -1,7 +1,6 @@
 package com.indukitchen.indukitchen.entityRepository;
 
 import com.indukitchen.indukitchen.domain.dto.CarritoDto;
-import com.indukitchen.indukitchen.domain.dto.ProductoDto;
 import com.indukitchen.indukitchen.domain.dto.request.CreateCarritoRequestDto;
 import com.indukitchen.indukitchen.domain.dto.update.UpdateCarritoDto;
 import com.indukitchen.indukitchen.persistence.entity.CarritoEntity;
@@ -21,13 +20,14 @@ import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 @Import({CarritoEntityRepository.class, CarritoMapperImpl.class})
-class CarritoEntityRepositoryIT {
+class CarritoEntityRepositoryTest {
 
     @Autowired
     EntityManager em;
@@ -72,7 +72,7 @@ class CarritoEntityRepositoryIT {
     @Test
     @DisplayName("save(): crea carrito con productos válidos y los mapea a DTO")
     void save_creates_cart_with_products() {
-        // given
+        // Arrange
         newCliente("CLI-1");
         var p1 = newProducto("Plancha", new BigDecimal("10.00"));
         var p2 = newProducto("Horno", new BigDecimal("20.00"));
@@ -80,35 +80,36 @@ class CarritoEntityRepositoryIT {
 
         var req = new CreateCarritoRequestDto("CLI-1", List.of(p1.getId(), p2.getId()));
 
-        // when
+        // Act
         CarritoDto dto = repository.save(req);
 
-        // then
-        assertNotNull(dto);
-        assertTrue(dto.id() > 0);
-        assertEquals("CLI-1", dto.idCliente());
-        assertEquals(2, dto.productos().size());
+        // Assert
+        assertThat(dto).isNotNull();
+        assertThat(dto.id()).isPositive();
+        assertThat(dto.idCliente()).isEqualTo("CLI-1");
+        assertThat(dto.productos()).hasSize(2);
     }
 
     @Test
     @DisplayName("save(): lanza IllegalArgumentException si vienen IDs de productos inexistentes")
     void save_throws_when_product_ids_missing() {
-        // given
+        // Arrange
         newCliente("CLI-1");
         var p1 = newProducto("Plancha", new BigDecimal("10.00"));
         em.flush();
 
         var req = new CreateCarritoRequestDto("CLI-1", List.of(p1.getId(), 999999L));
 
-        // when / then
-        var ex = assertThrows(IllegalArgumentException.class, () -> repository.save(req));
-        assertTrue(ex.getMessage().contains("Productos no encontrados"));
+        // Act & Assert
+        assertThatThrownBy(() -> repository.save(req))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Productos no encontrados");
     }
 
     @Test
     @DisplayName("getById(): devuelve carrito con sus productos")
     void getById_returns_cart_with_products() {
-        // given
+        // Arrange
         newCliente("CLI-2");
         var p1 = newProducto("Sartén", new BigDecimal("5.00"));
         var p2 = newProducto("Olla", new BigDecimal("7.00"));
@@ -116,20 +117,20 @@ class CarritoEntityRepositoryIT {
         em.flush();
         em.clear();
 
-        // when
+        // Act
         CarritoDto dto = repository.getById(saved.getId());
 
-        // then
-        assertNotNull(dto);
-        assertEquals(saved.getId(), dto.id());
-        assertEquals("CLI-2", dto.idCliente());
-        assertEquals(2, dto.productos().size());
+        // Assert
+        assertThat(dto).isNotNull();
+        assertThat(dto.id()).isEqualTo(saved.getId());
+        assertThat(dto.idCliente()).isEqualTo("CLI-2");
+        assertThat(dto.productos()).hasSize(2);
     }
 
     @Test
     @DisplayName("getAll(): devuelve lista de carritos")
     void getAll_returns_list() {
-        // given
+        // Arrange
         newCliente("CLI-A");
         newCliente("CLI-B");
         var p = newProducto("Cuchillo", new BigDecimal("3.50"));
@@ -138,63 +139,59 @@ class CarritoEntityRepositoryIT {
         em.flush();
         em.clear();
 
-        // when
+        // Act
         var all = repository.getAll();
 
-        // then
-        assertNotNull(all);
-        assertTrue(all.size() >= 2);
-        assertTrue(all.stream().anyMatch(c -> c.idCliente().equals("CLI-A")));
-        assertTrue(all.stream().anyMatch(c -> c.idCliente().equals("CLI-B")));
+        // Assert (encadenado)
+        assertThat(all)
+                .isNotNull()
+                .hasSizeGreaterThanOrEqualTo(2)
+                .extracting(CarritoDto::idCliente)
+                .contains("CLI-A", "CLI-B");
     }
 
     @Test
     @DisplayName("update(): cambia el idCliente respetando la FK")
     void update_changes_idCliente() {
-        // given
+        // Arrange
         newCliente("CLI-OLD");
         newCliente("CLI-NEW");
         var carrito = newCarrito("CLI-OLD", List.of());
         em.flush();
         em.clear();
 
-        // Usamos el record con 3 argumentos como definiste:
         var updateDto = new UpdateCarritoDto(
-                carrito.getId(),         // id (no lo usa el repo, pero el record lo pide)
-                "CLI-NEW",               // nuevo idCliente
-                List.<ProductoDto>of()   // productos (no los actualiza este método)
+                carrito.getId(),
+                "CLI-NEW",
+                List.of()
         );
 
-        // when
+        // Act
         var updated = repository.update(carrito.getId(), updateDto);
 
-        // then
-        assertNotNull(updated);
-        assertEquals("CLI-NEW", updated.idCliente());
+        // Assert
+        assertThat(updated).isNotNull();
+        assertThat(updated.idCliente()).isEqualTo("CLI-NEW");
 
-        // y verificamos en BD
         var reloaded = em.find(CarritoEntity.class, carrito.getId());
-        assertEquals("CLI-NEW", reloaded.getIdCliente());
+        assertThat(reloaded.getIdCliente()).isEqualTo("CLI-NEW");
     }
 
     @Test
     @DisplayName("delete(): elimina por id sin excepciones")
     void delete_removes_cart() {
-        // given
+        // Arrange
         newCliente("CLI-X");
         var cart = newCarrito("CLI-X", List.of());
         em.flush();
         long id = cart.getId();
 
-        // when
+        // Act
         repository.delete(id);
         em.flush();
         em.clear();
 
-        // then
-        assertNull(em.find(CarritoEntity.class, id));
+        // Assert
+        assertThat(em.find(CarritoEntity.class, id)).isNull();
     }
 }
-
-
-

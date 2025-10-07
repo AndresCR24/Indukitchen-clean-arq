@@ -208,4 +208,3 @@ class FacturaEntityTest {
         assertNull(found.getMetodoPagoFactura(), "metodoPagoFactura debe ser null al no existir FK");
     }
 }
-

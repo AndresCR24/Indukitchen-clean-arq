@@ -48,8 +48,9 @@ class FacturaDtoTest {
         FacturaDto c = new FacturaDto(2L, 10L, 7);
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a).isNotEqualTo(c);
+        assertThat(a)
+                .isEqualTo(b)
+                .isNotEqualTo(c);
     }
 
     @Test
@@ -60,7 +61,7 @@ class FacturaDtoTest {
         FacturaDto b = new FacturaDto(1L, 10L, 7);
 
         // Assert
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a).hasSameHashCodeAs(b);
     }
 
     @Test
@@ -71,7 +72,7 @@ class FacturaDtoTest {
         FacturaDto b = new FacturaDto(2L, 10L, 7);
 
         // Assert
-        assertThat(a.hashCode()).isNotEqualTo(b.hashCode());
+        assertThat(a).doesNotHaveSameHashCodeAs(b);
     }
 
     @Test
@@ -155,9 +156,15 @@ class FacturaDtoTest {
         FacturaDto dto = new FacturaDto(-1L, -5L, -10);
 
         // Assert
-        assertThat(dto.id()).isNegative().isEqualTo(-1L);
-        assertThat(dto.idCarrito()).isNegative().isEqualTo(-5L);
-        assertThat(dto.idMetodoPago()).isNegative().isEqualTo(-10);
+        assertThat(dto.id())
+                .isNegative()
+                .isEqualTo(-1L);
+        assertThat(dto.idCarrito())
+                .isNegative()
+                .isEqualTo(-5L);
+        assertThat(dto.idMetodoPago())
+                .isNegative()
+                .isEqualTo(-10);
     }
 
     @Test
@@ -229,9 +236,8 @@ class FacturaDtoTest {
         FacturaDto c = new FacturaDto(1L, 2L, 3);
 
         // Assert
-        assertThat(a).isEqualTo(b);
+        assertThat(a).isEqualTo(b).isEqualTo(c);
         assertThat(b).isEqualTo(c);
-        assertThat(a).isEqualTo(c);
     }
 
     @Test
@@ -248,7 +254,7 @@ class FacturaDtoTest {
     }
 
     @Test
-    @DisplayName("Record con idMetodoPago null en toString()")
+    @DisplayName("toString() con campos null no causa error")
     void toString_with_null_idMetodoPago() {
         // Arrange
         FacturaDto dto = new FacturaDto(1L, 2L, null);
@@ -258,8 +264,7 @@ class FacturaDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("FacturaDto")
-                .contains("idMetodoPago=null");
+                .contains("FacturaDto", "idMetodoPago=null");
     }
 
     @Test
@@ -270,8 +275,8 @@ class FacturaDtoTest {
         FacturaDto b = new FacturaDto(1L, 2L, null);
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 }
-

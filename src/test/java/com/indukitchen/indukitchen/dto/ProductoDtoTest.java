@@ -77,8 +77,9 @@ class ProductoDtoTest {
                 new BigDecimal("100.00"), 10, 8.5, "horno.jpg");
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a).isNotEqualTo(c);
+        assertThat(a)
+                .isEqualTo(b)
+                .isNotEqualTo(c);
     }
 
     @Test
@@ -91,7 +92,7 @@ class ProductoDtoTest {
                 new BigDecimal("100.00"), 10, 8.5, "horno.jpg");
 
         // Assert
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a).hasSameHashCodeAs(b);
     }
 
     @Test
@@ -322,8 +323,9 @@ class ProductoDtoTest {
         ProductoDto b = new ProductoDto(5L, null, null, null, null, null, null);
 
         // Assert
-        assertThat(a).isEqualTo(b);
-        assertThat(a.hashCode()).isEqualTo(b.hashCode());
+        assertThat(a)
+                .isEqualTo(b)
+                .hasSameHashCodeAs(b);
     }
 
     @Test
@@ -362,9 +364,6 @@ class ProductoDtoTest {
 
         // Assert
         assertThat(result)
-                .contains("ProductoDto")
-                .contains("id=1")
-                .contains("nombre=null");
+                .contains("ProductoDto", "id=1", "nombre=null");
     }
 }
-
