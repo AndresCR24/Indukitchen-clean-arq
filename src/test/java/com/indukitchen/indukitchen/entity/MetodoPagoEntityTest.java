@@ -111,4 +111,17 @@ class MetodoPagoEntityTest {
         assertNull(reloaded.getEfectivo());
         assertNull(reloaded.getTarjeta());
     }
+
+    @Test
+    void setId_sets_value_on_transient_instance() {
+        // given
+        var mp = nuevo(null, null);
+
+        // when
+        mp.setId(123L);
+
+        // then
+        assertEquals(123L, mp.getId(), "setId debe actualizar el campo en la instancia transiente");
+    }
+
 }

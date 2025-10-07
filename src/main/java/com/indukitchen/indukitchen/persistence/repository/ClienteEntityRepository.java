@@ -35,12 +35,7 @@ public class ClienteEntityRepository implements ClienteRepository {
     @Override
     public ClienteDto save(ClienteDto clienteDto) {
 
-//        if (this.crudProductoEntity.findFirstByTitulo(productoDto.nombre()) != null) {
-//            throw new MovieAlredyExistException(movieDto.title());
-//        }
-
         ClienteEntity clienteEntity = this.clienteMapper.toEntity(clienteDto);
-        //productoEntity.setDescripcion("Disponible");
         return this.clienteMapper.toDto(this.crudClienteEntity.save(clienteEntity));
     }
 
@@ -50,9 +45,6 @@ public class ClienteEntityRepository implements ClienteRepository {
 
         if (clienteEntity == null) return null;
 
-        //this.movieMapper.updateEntityFromDto(updateMovieDto, movieEntity);
-
-        //
         clienteEntity.setCedula(updateClienteDto.cedula());
         clienteEntity.setCedula(updateClienteDto.cedula());
         clienteEntity.setNombre(updateClienteDto.nombre());

@@ -149,4 +149,50 @@ class ProductoEntityTest {
         assertEquals(1, carritosQueLoContienen.size(), "Debe existir una fila en la join-table para el producto");
         assertEquals("CLI-P1", carritosQueLoContienen.get(0).getIdCliente());
     }
+
+    @Test
+    void setCarritos_assigns_collection_but_does_not_persist_inverse_side() {
+        // given: un producto y dos carritos (el dueño de la relación es CarritoEntity.productos)
+        var prod = nuevoProducto("Cafetera", new BigDecimal("59.90"));
+        em.persist(prod);
+
+        var cli = nuevoClienteValido("CLI-M2");
+        em.persist(cli);
+
+        var cart1 = new CarritoEntity();
+        cart1.setIdCliente("CLI-M2");
+        em.persist(cart1);
+
+        var cart2 = new CarritoEntity();
+        cart2.setIdCliente("CLI-M2");
+        em.persist(cart2);
+
+        em.flush();
+        long prodId = prod.getId();
+        Long cart1Id = cart1.getId();
+        Long cart2Id = cart2.getId();
+        em.clear();
+
+        // when: asignamos explícitamente la colección desde el lado inverso (ProductoEntity)
+        var managedProd = em.find(ProductoEntity.class, prodId);
+        var lista = new ArrayList<CarritoEntity>();
+        lista.add(em.find(CarritoEntity.class, cart1Id));
+        lista.add(em.find(CarritoEntity.class, cart2Id));
+        managedProd.setCarritos(lista);
+
+        // (efecto inmediato en memoria)
+        assertNotNull(managedProd.getCarritos());
+        assertEquals(2, managedProd.getCarritos().size());
+
+        em.flush();
+        em.clear();
+
+        // then: al recargar, como el lado dueño no se actualizó, la join-table sigue vacía
+        var reloaded = em.find(ProductoEntity.class, prodId);
+        assertNotNull(reloaded);
+        assertNotNull(reloaded.getCarritos());
+        assertTrue(reloaded.getCarritos().isEmpty(),
+                "Si no se actualiza el lado dueño (CarritoEntity.productos), setCarritos en el lado inverso no persiste la relación");
+    }
+
 }

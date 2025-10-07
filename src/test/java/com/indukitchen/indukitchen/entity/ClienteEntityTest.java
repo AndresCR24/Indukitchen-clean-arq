@@ -133,4 +133,42 @@ class ClienteEntityTest {
         assertThat(r.getLocked()).isTrue();
         assertThat(r.getDisabled()).isTrue();
     }
+
+    @Test
+    void setCarritos_assigns_collection_and_roundtrips() {
+        // Arrange: cliente y dos carritos asociados por FK
+        var cli = newCliente("CLI-7", "Nora", "n@dom.com");
+        em.persist(cli);
+
+        var cart1 = new CarritoEntity();
+        cart1.setIdCliente("CLI-7");
+        em.persist(cart1);
+
+        var cart2 = new CarritoEntity();
+        cart2.setIdCliente("CLI-7");
+        em.persist(cart2);
+
+        em.flush();
+        em.clear();
+
+        // Obtenemos el cliente y los carritos desde BD
+        var reload = em.find(ClienteEntity.class, "CLI-7");
+        var carts = em.createQuery(
+                        "select c from CarritoEntity c where c.idCliente = :id", CarritoEntity.class)
+                .setParameter("id", "CLI-7")
+                .getResultList();
+
+        // Act: asignamos explícitamente la colección con el setter
+        reload.setCarritos(carts);
+        em.flush();
+        em.clear();
+
+        // Assert: al volver a acceder, la colección refleja lo asignado
+        var after = em.find(ClienteEntity.class, "CLI-7");
+        assertThat(after.getCarritos())
+                .as("setCarritos debe reflejarse al acceder a la colección")
+                .hasSize(2)
+                .allSatisfy(c -> assertThat(c.getIdCliente()).isEqualTo("CLI-7"));
+    }
+
 }

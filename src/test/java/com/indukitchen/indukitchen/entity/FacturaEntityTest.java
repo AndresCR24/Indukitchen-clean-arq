@@ -207,4 +207,38 @@ class FacturaEntityTest {
         assertNull(found.getIdMetodoPago(), "idMetodoPago debe seguir null al no ser escribible por la asociación");
         assertNull(found.getMetodoPagoFactura(), "metodoPagoFactura debe ser null al no existir FK");
     }
+
+    @Test
+    void assigning_carritoFactura_does_not_update_fk_column() {
+        // given: cliente con dos carritos y factura apuntando al carrito 1 vía FK
+        var cli = newCliente("CLI-SF1", "Eva", "eva@dom.com");
+        em.persist(cli);
+
+        var c1 = newCarrito("CLI-SF1");
+        var c2 = newCarrito("CLI-SF1");
+        em.persist(c1);
+        em.persist(c2);
+
+        var f = new FacturaEntity();
+        f.setIdCarrito(c1.getId());     // FK apunta a c1
+        em.persist(f);
+        em.flush();
+        em.clear();
+
+        // when: asignamos la asociación al carrito 2 usando el setter del lado de la entidad
+        var managed = em.find(FacturaEntity.class, f.getId());
+        managed.setCarritoFactura(em.find(CarritoEntity.class, c2.getId()));
+        em.flush();
+        em.clear();
+
+        // then: la FK NO cambia; la relación sigue resolviendo al carrito 1
+        var reloaded = em.find(FacturaEntity.class, f.getId());
+        assertNotNull(reloaded);
+        assertEquals(c1.getId(), reloaded.getIdCarrito(),
+                "La FK idCarrito no debe cambiar al asignar la asociación");
+        assertNotNull(reloaded.getCarritoFactura());
+        assertEquals(c1.getId(), reloaded.getCarritoFactura().getId(),
+                "La asociación debe seguir apuntando al carrito indicado por la FK");
+    }
+
 }

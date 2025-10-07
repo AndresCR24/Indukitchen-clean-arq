@@ -156,5 +156,42 @@ class ClienteDtoTest {
         assertTrue(s.contains("cedula=ID"));
         assertTrue(s.contains("nombre=Ana"));
     }
+
+    @Test
+    void cedula_null_is_rejected() {
+        var dto = new ClienteDto(null, "Ana", "Calle 1", "a@b.com", "300");
+        var v = validator.validate(dto);
+        assertTrue(v.stream().anyMatch(cv ->
+                cv.getPropertyPath().toString().equals("cedula")
+                        && cv.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class)));
+    }
+
+    @Test
+    void nombre_null_is_rejected() {
+        var dto = new ClienteDto("ID", null, "Calle 1", "a@b.com", "300");
+        var v = validator.validate(dto);
+        assertTrue(v.stream().anyMatch(cv ->
+                cv.getPropertyPath().toString().equals("nombre")
+                        && cv.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class)));
+    }
+
+    @Test
+    void direccion_null_is_rejected() {
+        var dto = new ClienteDto("ID", "Ana", null, "a@b.com", "300");
+        var v = validator.validate(dto);
+        assertTrue(v.stream().anyMatch(cv ->
+                cv.getPropertyPath().toString().equals("direccion")
+                        && cv.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class)));
+    }
+
+    @Test
+    void telefono_null_is_rejected() {
+        var dto = new ClienteDto("ID", "Ana", "Calle 1", "a@b.com", null);
+        var v = validator.validate(dto);
+        assertTrue(v.stream().anyMatch(cv ->
+                cv.getPropertyPath().toString().equals("telefono")
+                        && cv.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class)));
+    }
+
 }
 

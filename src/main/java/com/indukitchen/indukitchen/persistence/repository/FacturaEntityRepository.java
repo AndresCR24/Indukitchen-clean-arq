@@ -35,34 +35,10 @@ public class FacturaEntityRepository implements FacturaRepository {
     @Override
     public FacturaDto save(FacturaDto facturaDto) {
 
-//        if (this.crudProductoEntity.findFirstByTitulo(productoDto.nombre()) != null) {
-//            throw new MovieAlredyExistException(movieDto.title());
-//        }
         FacturaEntity facturaEntity = this.facturaMapper.toEntity(facturaDto);
-        //productoEntity.setDescripcion("Disponible");
         return this.facturaMapper.toDto(this.crudFacturaEntity.save(facturaEntity));
     }
 
-    //Pensar si en la logica del negocio se podria actualizar una factura
-    //O si se elimina la factura y simplemente se crea otra
-//    @Override
-//    public FacturaDto update(long id, UpdateFacturaDto updateFacturaDto) {
-//        FacturaEntity facturaEntity = this.crudFacturaEntity.findById(id).orElse(null);
-//
-//        if (facturaEntity == null) return null;
-//
-//        //this.movieMapper.updateEntityFromDto(updateMovieDto, movieEntity);
-//
-//        //
-//        clienteEntity.setCedula(updateClienteDto.cedula());
-//        clienteEntity.setCedula(updateClienteDto.cedula());
-//        clienteEntity.setNombre(updateClienteDto.nombre());
-//        clienteEntity.setDireccion(updateClienteDto.direccion());
-//        clienteEntity.setCorreo(updateClienteDto.correo());
-//        clienteEntity.setTelefono(updateClienteDto.telefono());
-//
-//        return this.clienteMapper.toDto(this.crudClienteEntity.save(clienteEntity));
-//    }
 
     @Override
     public void delete(long id) {

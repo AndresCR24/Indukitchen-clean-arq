@@ -30,10 +30,6 @@ public class ProductoService {
         return this.productoRepository.save(productoDto);
     }
 
-//    public ProductoDto update(long id, UpdateProductoDto updateProductoDto) {
-//        return this.productoRepository.update(id, updateProductoDto);
-//    }
-
     public void delete(long id) {
         this.productoRepository.delete(id);
     }

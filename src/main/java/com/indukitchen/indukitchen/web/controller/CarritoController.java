@@ -21,8 +21,6 @@ import java.util.List;
 public class CarritoController {
 
     private final CarritoService carritoService;
-    //private final IndukitchenAiService indukitchenAiService;
-
     public CarritoController(CarritoService carritoService) {
         this.carritoService = carritoService;
     }
@@ -61,11 +59,6 @@ public class CarritoController {
         //return ResponseEntity.status(HttpStatus.CREATED).body(movieDtoResponse);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.carritoService.add(createCarritoRequestDto));
     }
-
-//    @PostMapping("/suggest")
-//    public ResponseEntity<String> generateCarritoSuggestion(@RequestBody SuggestClienteDto suggestCliente) {
-//        return ResponseEntity.ok(this.indukitchenAiService.generateClienteSuggestion(suggestCliente.userPreferences()));
-//    }
 
     //PUT
     @PutMapping("/{id}")
